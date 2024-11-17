@@ -1,0 +1,97 @@
+<div class="author">
+    <h1 class="author__heading">Statistics</h1>
+    <p class="author__body">See how many people took a trip by Trip at Knight</p>
+</div>
+
+<div class="container">
+
+    <!-- Chart container -->
+    <div class="chart-container">
+        <canvas id="tripStats" width="800" height="400"></canvas>
+    </div>
+
+    <!-- Statistics summary -->
+    <div class="statistics-summary">
+        <h2>Summary</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Trips</h3>
+                <p id="totalTrips">Loading...</p>
+            </div>
+            <div class="stat-card">
+                <h3>Average Duration</h3>
+                <p id="avgDuration">Loading...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Parse the server-side data
+    const tripData = <%- JSON.stringify(data) %>;
+
+    // Prepare data for the chart
+    const destinations = tripData.map(trip => trip.Destination);
+    const costs = tripData.map(trip => trip['Accommodation cost'] + trip['Transportation cost']);
+    const durations = tripData.map(trip => trip['Duration (days)']);
+
+    // Create the chart
+    const ctx = document.getElementById('tripStats').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: destinations,
+            datasets: [{
+                label: 'Total Cost ($)',
+                data: costs,
+                borderColor: '#1c1c1c',
+                tension: 0.3,
+                yAxisID: 'y'
+            }, {
+                label: 'Duration (Days)',
+                data: durations,
+                borderColor: '#b30000',
+                tension: 0.3,
+                yAxisID: 'y1'
+            }]
+        },
+        options: {
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    title: {
+                        display: true,
+                        text: 'Total Cost ($)'
+                    }
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    title: {
+                        display: true,
+                        text: 'Duration (Days)'
+                    },
+                    grid: {
+                        drawOnChartArea: false
+                    }
+                }
+            }
+        }
+    });
+
+    // Update summary statistics
+    document.getElementById('totalTrips').textContent = tripData.length;
+    const avgDuration = (durations.reduce((a, b) => a + b, 0) / durations.length).toFixed(1);
+    document.getElementById('avgDuration').textContent = `${avgDuration} days`;
+</script>

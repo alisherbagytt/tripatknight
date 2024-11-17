@@ -1,0 +1,14 @@
+<form action="/add-post" method="POST">
+  <label for="title"><b>Title</b></label>
+  <input type="text" placeholder="Post Title" name="title">
+
+  <label for="body"><b>Content</b></label>
+  <textarea name="body" cols="50" rows="10"></textarea>
+
+  <label for="images"><b>Images</b></label>
+  <input type="text" name="images[]" placeholder="Image URL 1">
+  <input type="text" name="images[]" placeholder="Image URL 2">
+  <input type="text" name="images[]" placeholder="Image URL 3">
+
+  <input type="submit" value="Add" class="btn">
+</form>

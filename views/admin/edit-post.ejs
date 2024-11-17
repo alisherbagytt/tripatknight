@@ -1,0 +1,15 @@
+<form action="/edit-post/<%= data._id %>?_method=PUT" method="POST">
+  <label for="title"><b>Title</b></label>
+  <input type="text" placeholder="Post Title" name="title" value="<%= data.title %>">
+
+  <label for="body"><b>Content</b></label>
+  <textarea name="body" cols="50" rows="10"><%= data.body %></textarea>
+
+  <label for="images"><b>Images (minimum 3 URLs)</b></label>
+  <% data.images.forEach((image, index) => { %>
+    <input type="text" placeholder="Image URL <%= index + 1 %>" name="images[]" value="<%= image %>">
+  <% }) %>
+  <input type="text" placeholder="Additional Image URL (optional)" name="images[]">
+
+  <input type="submit" value="Update" class="btn">
+</form>

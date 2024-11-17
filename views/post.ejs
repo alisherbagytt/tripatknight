@@ -1,0 +1,84 @@
+<h1><%= data.title %></h1>
+<article class="article"><%= data.body %></article>
+
+<div class="carousel">
+    <div class="carousel-images">
+        <% if (data.images && data.images.length > 0) { %>
+            <% data.images.forEach(image => { %>
+                <img src="<%= image %>" alt="Post Image">
+            <% }) %>
+        <% } else { %>
+            <p>No images available.</p>
+        <% } %>
+    </div>
+    <button class="prev-btn">&larr;</button>
+    <button class="next-btn">&rarr;</button>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const images = document.querySelectorAll('.carousel-images img');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        let currentIndex = 0;
+
+        const updateCarousel = () => {
+            images.forEach((img, index) => {
+                img.style.display = index === currentIndex ? 'block' : 'none';
+            });
+        };
+
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            updateCarousel();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % images.length;
+            updateCarousel();
+        });
+
+        // Initialize carousel
+        updateCarousel();
+    });
+</script>
+
+<style>
+    .carousel {
+        position: relative;
+        max-width: 600px;
+        margin: 20px auto;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    .carousel-images img {
+        display: none;
+        width: 100%;
+        height: auto;
+    }
+
+    .prev-btn, .next-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        z-index: 10;
+    }
+
+    .prev-btn {
+        left: 10px;
+    }
+
+    .next-btn {
+        right: 10px;
+    }
+
+    .prev-btn:hover, .next-btn:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+</style>

@@ -1,0 +1,11 @@
+<div class="auth-container">
+    <h2>2FA Verification</h2>
+    <form action="/verify-2fa" method="POST">
+        <div class="form-group">
+            <label for="token">Enter 2FA Code</label>
+            <input type="text" id="token" name="token" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Verify</button>
+    </form>
+</div>
